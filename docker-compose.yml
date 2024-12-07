@@ -1,0 +1,30 @@
+version: '3.8'  # Asegúrate de usar una versión de Docker Compose actual
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"  # Exponer el puerto de la aplicación
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://postgres:1920@db:5432/hotel_base
+    depends_on:
+      - db
+    volumes:
+      - .:/app  # Para reflejar los cambios de tu código local en el contenedor
+    command: waitress-serve --listen=*:8000 app:application # Comando para levantar la aplicación
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1920
+      POSTGRES_DB: hotel_base
+    ports:
+      - "5433:5432"  # Exponer el puerto de PostgreSQL
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persistir los datos de la base de datos
+
+volumes:
+  postgres_data:
