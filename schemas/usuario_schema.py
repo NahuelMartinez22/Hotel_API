@@ -8,7 +8,7 @@ class LoginSchema(Schema):
     clave = fields.String(required=True)
 
     # Método para cargar y validar el usuario y la contraseña
-    @post_load
+    @post_load #decorador que incializa 
     def validar_usuario(self, data, **kwargs):
         usuario = data.get('usuario')
         clave = data.get('clave')
