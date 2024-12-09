@@ -1,7 +1,7 @@
 from config import app  
-from router.usuario_router import usuario_bp
-from router.habitacion_router import habitacion_bp
-from router.reserva_router import reserva_bp
+from routes.usuario_routes import usuario_bp
+from routes.habitacion_routes import habitacion_bp
+from routes.reserva_routes import reserva_bp
 
 application = app
 

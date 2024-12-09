@@ -11,7 +11,7 @@ from schemas.habitacion_por_fecha_schema import BuscarHabitacionesPorFechaRespon
 from schemas.habitacion_schema import HabitacionSchema
 from schemas.reserva_habitacion_schema import HabitacionEstadoSchema
 import validaciones
-from router.usuario_router import rutaProtegida
+from routes.usuario_routes import rutaProtegida
 from dbConfig import db
 from config import app
 

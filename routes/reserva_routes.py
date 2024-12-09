@@ -5,7 +5,7 @@ from schemas.reserva_habitacion_schema import HabitacionEstadoSchema
 from schemas.reserva_schema import ReservaSchema
 from models.models import Reserva
 import validaciones
-from router.usuario_router import rutaProtegida
+from routes.usuario_routes import rutaProtegida
 from dbConfig import db
 from config import app
 
