@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
-from models import db
+from models.models import db
 import os
 
 app = Flask(__name__)

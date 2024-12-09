@@ -3,7 +3,7 @@ from flask import Blueprint, jsonify, request
 import jwt
 from schemas.reserva_habitacion_schema import HabitacionEstadoSchema
 from schemas.reserva_schema import ReservaSchema
-from models import Reserva
+from models.models import Reserva
 import validaciones
 from router.usuario_router import rutaProtegida
 from dbConfig import db

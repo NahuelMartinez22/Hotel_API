@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Blueprint, jsonify, request
 import jwt
 from marshmallow import ValidationError
-from models import Habitacion , Reserva
+from models.models import Habitacion , Reserva
 from schemas.activar_mensaje_habitacion_schema import ActivarHabitacionResponseSchema
 from schemas.actualizar_precio_habitacion_schema import ActualizarPrecioHabitacionSchema
 from schemas.alta_habitacion_schema import AltaHabitacionSchema

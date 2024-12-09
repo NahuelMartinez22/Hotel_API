@@ -1,4 +1,4 @@
-from models import Usuario, Habitacion, Reserva
+from models.models import Usuario, Habitacion, Reserva
 from dbConfig import db
 from datetime import datetime
 from werkzeug.security import check_password_hash

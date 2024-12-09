@@ -2,7 +2,7 @@ from functools import wraps
 from flask import Blueprint, jsonify, request
 import jwt
 from marshmallow import ValidationError
-from models import Usuario  # Import your models
+from models.models import Usuario  # Import your models
 from schemas.login_schema import LoginSchema
 from schemas.registro_schema import RegistroSchema
 import validaciones
