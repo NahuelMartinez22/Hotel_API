@@ -12,6 +12,7 @@ from config import app
 
 
 reserva_bp = Blueprint('reserva_bp', __name__)
+reserva_schema = ReservaSchema()
 
 # ------------------------ENDPOINT RESERVAS: para reservar una nueva habitacion (se necesita dos fechas disponibles)
 @reserva_bp.route('/reservas', methods=['POST'])

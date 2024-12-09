@@ -5,40 +5,48 @@ from marshmallow import ValidationError
 from models.models import Usuario 
 from schemas.login_schema import LoginSchema
 from schemas.registro_schema import RegistroSchema
-import validaciones
 from dbConfig import db
 from config import app
+from schemas.usuario_schema import LoginSchema
 
 
 usuario_bp = Blueprint('usuario_bp', __name__)
 
+#schema = LoginSchema()
+
+#el login ya agrege validacion marshmallow como pidio el prof
 # ------------------------ENDPOINT LOGIN 
 @usuario_bp.route('/login', methods=['POST'])
 def login():
     try:
+        # esto es la  instancia del esquema para validacines
         schema = LoginSchema()
         data = request.get_json()
-        
+
+        # esto valida datos con el schema que hice de usuario_schema
         try:
             validated_data = schema.load(data)
         except ValidationError as err:
-            return jsonify({"message": "Invalid input", "errors": err.messages}), 400
+            return jsonify({"mensaje": "Entrada no valida", "errores": err.messages}), 400
 
-        usuario = validated_data['usuario']
-        clave = validated_data['clave']
+        # Si la validacion pasa, recuperamos el usuario y generamos el token
+        usuario_data = Usuario.query.filter_by(usuario=validated_data['usuario']).first()
+        payload = {
+            "usuario": usuario_data.usuario,
+            "id": usuario_data.id,
+            "categoria": usuario_data.categoria
+        }
 
-        usuario_data = validaciones.validarUsuario(usuario, clave)
+        # Genera el token JWT
+        token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm='HS256')
 
-        if usuario_data:
-            payload = {"usuario": usuario, "id": usuario_data.id, "categoria": usuario_data.categoria}
-            
-            token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm='HS256')
+        return jsonify({'token': token, 'categoria': usuario_data.categoria}), 200
 
-            return jsonify({'token': token, 'categoria': usuario_data.categoria}), 200
-        else:
-            return jsonify({'status': 401, "message": 'Credenciales inválidas.'}), 401
     except Exception as e:
-        return jsonify({'status': 500, "message": str(e)}), 500
+        print(f"Excepción en /login: {e}")
+        return jsonify({'estado': 500, "mensaje": str(e)}), 500
+
+
     
 # Función para verificar las rutas con el token y rol
 def rutaProtegida(categoria_esperada):
@@ -72,6 +80,8 @@ def rutaProtegida(categoria_esperada):
                 return jsonify({"status": 500, 'message': 'Error interno del servidor'}), 500
         return wrapper
     return decorator
+
+
 
 # ------------------------ENDPOINT REGRITRO: para registrar un nuevo usuario
 @usuario_bp.route('/registro', methods=['POST'])

@@ -17,6 +17,8 @@ from config import app
 
 habitacion_bp = Blueprint('habitacion_bp', __name__)
 
+habitacion_schema = HabitacionSchema()
+
 
 # ------------------------ENDPOINT HABITACIONES: Ruta para dar de alta habitacion ----------    
 
