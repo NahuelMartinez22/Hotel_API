@@ -121,3 +121,5 @@ def mostrar_usuario_por_id(usuario_id):
     print(f"ID: {usuario.id}")
     print(f"Usuario: {usuario.usuario}")
     print(f"Categoría: {usuario.categoria}")
+
+mostrar_usuario_por_id(3)
