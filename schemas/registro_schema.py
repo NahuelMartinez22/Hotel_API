@@ -6,3 +6,8 @@ class RegistroSchema(Schema):
     categoria = fields.Str(required=True)
     clave1 = fields.Str(required=True)
     clave2 = fields.Str(required=True)
+    
+    
+    
+    
+    

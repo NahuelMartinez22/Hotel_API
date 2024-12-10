@@ -1,9 +1,10 @@
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-from models import models
+from models.models import Habitacion 
+from config import ma
 
 
-class HabitacionSchema(SQLAlchemyAutoSchema):
+class HabitacionSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = models.Habitacion
+        model = Habitacion
         load_instance = True
+
 

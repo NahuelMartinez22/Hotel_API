@@ -1,4 +1,4 @@
-version: '3.8'  # Asegúrate de usar una versión de Docker Compose actual
+version: '3.8'  
 
 services:
   app:
