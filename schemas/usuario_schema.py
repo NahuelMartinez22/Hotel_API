@@ -2,10 +2,16 @@ from marshmallow import Schema, fields, ValidationError, post_load
 from werkzeug.security import check_password_hash
 from models.models import Usuario
 from dbConfig import db
+from config import ma
 
-class LoginSchema(Schema):
+"""class LoginSchema(Schema):
     usuario = fields.String(required=True)
-    clave = fields.String(required=True)
+    clave = fields.String(required=True)"""
+
+class LoginSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Usuario
+        include_fk = True
 
     # Método para cargar y validar el usuario y la contraseña
     @post_load #decorador que incializa 
@@ -23,6 +29,6 @@ class LoginSchema(Schema):
 
         except Exception as e:
             print(f"Error al validar usuario: {e}")
-            raise ValidationError("Error interno en la validación del usuario.")
+            raise ValidationError("Error en la validacion del usuario.")
 
         return data  # devuelve los datos si todo salio bien 
