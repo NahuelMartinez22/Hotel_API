@@ -8,7 +8,7 @@ docker-compose up --build
 
 Este comando descargará las imágenes necesarias y construirá los contenedores para los servicios definidos en el archivo docker-compose.yml.
 
-Espera a que el proceso termine. Cuando todo haya cargado correctamente.
+esperar que termine y luego
 
 Accede a la API desde HotelesClient :
 

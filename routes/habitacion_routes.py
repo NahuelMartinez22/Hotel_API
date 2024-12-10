@@ -5,7 +5,6 @@ from marshmallow import ValidationError
 from models.models import Habitacion , Reserva
 from schemas.activar_mensaje_habitacion_schema import ActivarHabitacionResponseSchema
 from schemas.actualizar_precio_habitacion_schema import ActualizarPrecioHabitacionSchema
-from schemas.alta_habitacion_schema import AltaHabitacionSchema
 from schemas.deshabilitar_habitacion_shcema import DesactivarHabitacionResponseSchema
 from schemas.habitacion_por_fecha_schema import BuscarHabitacionesPorFechaResponseSchema
 from schemas.habitacion_schema import HabitacionSchema
@@ -14,42 +13,46 @@ import validaciones
 from routes.usuario_routes import rutaProtegida
 from dbConfig import db
 from config import app
+from schemas.habitacion_schema import AltaHabitacionSchema
 
 habitacion_bp = Blueprint('habitacion_bp', __name__)
 
 habitacion_schema = HabitacionSchema()
 
-
-# ------------------------ENDPOINT HABITACIONES: Ruta para dar de alta una habitacion ----------    
-
+#este ya tiene validacion con schemas
+# ------------------------ENDPOINT HABITACIONES: Ruta para dar de alta una habitacion ----------           
 @habitacion_bp.route('/habitaciones', methods=['POST'])
 @rutaProtegida(categoria_esperada='empleado')
 def alta_habitacion():
     try:
-        schema = AltaHabitacionSchema()
-        data = request.get_json()
+        schema = AltaHabitacionSchema()  
+        data = request.get_json()  
+
         try:
-            validated_data = schema.load(data)
+            validated_data = schema.load(data)  
         except ValidationError as err:
             return jsonify({"mensaje": "Datos no válidos", "errors": err.messages}), 400
 
         numero = validated_data['numero']
         precio = validated_data['precio']
 
-        if validaciones.validar_existencia_habitacion(numero):
-            return jsonify({"mensaje": "Error: Ya existe una habitacion con ese número."}), 400
+       #aca creo  una nueva instancia de Habitacion usando los datos validados,
+       #porque al crear con ma.SQLAlchemySchema no puedo renombrar numero_habitacion sea numero
+       #entonces uso Schema puro para poner que sea numero
+        nueva_habitacion = Habitacion(
+            numero_habitacion=numero,  
+            precio=precio  
+        )
 
-        if not validaciones.validar_precio(precio):
-            return jsonify({"mensaje": "Error: El precio debe ser un número positivo."}), 400
-
-        nueva_habitacion = Habitacion(numero_habitacion=numero, precio=precio)
+        # Guardar en la base de datos
         db.session.add(nueva_habitacion)
         db.session.commit()
 
-        return jsonify({"mensaje": "habitacion registrada exitosamente."}), 201
+        return jsonify({"mensaje": "Habitación registrada exitosamente."}), 201
 
     except Exception as e:
-        return jsonify({"mensaje": f"Error al registrar la habitacion: {str(e)}"}), 500
+        return jsonify({"mensaje": f"Error al registrar la habitación: {str(e)}"}), 500
+
     
     
 # ------------------------ENDPOINT HABITACIONES: Ruta para editar una habitacion ----------    
