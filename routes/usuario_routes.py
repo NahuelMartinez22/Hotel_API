@@ -3,8 +3,8 @@ from flask import Blueprint, jsonify, request
 import jwt
 from marshmallow import ValidationError
 from models.models import Usuario 
-from schemas.login_schema import LoginSchema
-from schemas.registro_schema import RegistroSchema
+from schemas.usuario_schema import LoginSchema , RegistroSchema
+
 from dbConfig import db
 from config import app
 from schemas.usuario_schema import LoginSchema
@@ -12,7 +12,7 @@ from schemas.usuario_schema import LoginSchema
 
 usuario_bp = Blueprint('usuario_bp', __name__)
 
-#schema = LoginSchema()
+
 
 #el login ya agrege validacion marshmallow como pidio el prof
 # ------------------------ENDPOINT LOGIN 
@@ -87,33 +87,27 @@ def rutaProtegida(categoria_esperada):
 @usuario_bp.route('/registro', methods=['POST'])
 def registro():
     try:
+        
         schema = RegistroSchema()
         data = request.get_json()
-        
+
         try:
             validated_data = schema.load(data)
         except ValidationError as err:
-            return jsonify({"message": "Invalid input", "errors": err.messages}), 400
+            return jsonify({"mensaje": "Datos de entrada invalidos. Por favor, corrige los errores y vuelve a intentarlo", "errors": err.messages}), 400
 
+        # trae los datos validados
         usuario = validated_data['usuario']
         categoria = validated_data['categoria']
         clave1 = validated_data['clave1']
-        clave2 = validated_data['clave2']
 
-        if clave1 != clave2:
-            return jsonify({"mensaje": "Las claves no coinciden"}), 400
-        
-        existing_user = Usuario.query.filter_by(usuario=usuario).first()
-        if existing_user:
-            return jsonify({"mensaje": "El usuario ya existe"}), 400
-
-
+        # Crear y guardar el nuevo usuario
         nuevo_usuario = Usuario(usuario=usuario, categoria=categoria, clave=clave1)
-
         db.session.add(nuevo_usuario)
         db.session.commit()
 
         return jsonify({"mensaje": "Usuario registrado exitosamente"}), 201
 
     except Exception as e:
-        return jsonify({"mensaje": f"Error: {str(e)}"}), 500
+        db.session.rollback()  
+        return jsonify({"mensaje": f"error interno: {str(e)}"}), 500

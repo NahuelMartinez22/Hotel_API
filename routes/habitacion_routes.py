@@ -20,7 +20,7 @@ habitacion_bp = Blueprint('habitacion_bp', __name__)
 habitacion_schema = HabitacionSchema()
 
 
-# ------------------------ENDPOINT HABITACIONES: Ruta para dar de alta habitacion ----------    
+# ------------------------ENDPOINT HABITACIONES: Ruta para dar de alta una habitacion ----------    
 
 @habitacion_bp.route('/habitaciones', methods=['POST'])
 @rutaProtegida(categoria_esperada='empleado')
@@ -81,7 +81,7 @@ def actualizar_precio_habitacion(id):
         return jsonify({"mensaje": f"Error: {str(e)}"}), 500
     
     
-# ------------------------ENDPOINT HABITACIONES: Ruta obtener habitacion ----------    
+# ------------------------ENDPOINT HABITACIONES: Ruta obtener una habitacion ----------    
 @habitacion_bp.route('/habitaciones', methods=['GET'])
 @rutaProtegida(categoria_esperada='empleado')
 def obtener_habitaciones():
@@ -111,7 +111,7 @@ def obtener_habitaciones():
 
 
     
-# ------------------------ENDPOINT HABITACIONES: Ruta obtener estado habitacion ---------- 
+# ------------------------ENDPOINT HABITACIONES: Ruta obtener  estado  de habitacion ---------- 
 
 @habitacion_bp.route('/habitaciones/<int:id>', methods=['GET'])
 @rutaProtegida(categoria_esperada='empleado')
@@ -159,7 +159,7 @@ def obtener_estado_habitaciones(id):
     except Exception as e:
         return jsonify({"mensaje": f"Error: {str(e)}"}), 500
     
-# ------------------------ENDPOINT HABITACIONES: Para habilitar una habitacion
+# ------------------------ENDPOINT HABITACIONES: ruta Para habilitar una habitacion
 @habitacion_bp.route('/habitaciones/<int:id>', methods=['POST'])
 @rutaProtegida(categoria_esperada='empleado')
 def activar_habitacion(id):
@@ -181,7 +181,7 @@ def activar_habitacion(id):
         error_schema = ActivarHabitacionResponseSchema()
         return jsonify(error_schema.dump({"mensaje": f"Error: {str(e)}"})), 500
     
-# ------------------------ENDPOINT HABITACIONES: Para desabilitar una habitacion
+# ------------------------ENDPOINT HABITACIONES:ruta Para desabilitar una habitacion
 @habitacion_bp.route('/habitaciones/<int:id>', methods=['DELETE'])
 @rutaProtegida(categoria_esperada='empleado')
 def desactivar_habitacion(id):
@@ -204,7 +204,7 @@ def desactivar_habitacion(id):
         return jsonify(error_schema.dump({"mensaje": f"Error: {str(e)}"})), 500
     
 
-# ------------------------ENDPOINT HABITACIONES: Ruta resumen diario----------   
+# ------------------------ENDPOINT HABITACIONES: Ruta para resumen diario----------   
 @habitacion_bp.route('/habitaciones/diario', methods=['GET'])
 @rutaProtegida(categoria_esperada='empleado')
 def buscar_habitaciones_por_fecha():
@@ -250,7 +250,7 @@ def buscar_habitaciones_por_fecha():
         return jsonify({"mensaje": f"Error: {str(e)}"}), 500
 
 
-# ------------------------ENDPOINT HABITACIONES: Ruta filtrar por precio ----------  
+# ------------------------ENDPOINT HABITACIONES: Ruta para filtrar por precio ----------  
 @habitacion_bp.route('/habitaciones/filtrar', methods=['GET'])
 @rutaProtegida(categoria_esperada='cliente')
 def filtrar_habitaciones_por_precio():
@@ -285,7 +285,7 @@ def filtrar_habitaciones_por_precio():
         return jsonify({"mensaje": f"Error: {str(e)}"}), 500
     
 
-# ------------------------ENDPOINT HABITACIONES: Ruta filtrar por fechas  ----------  
+# ------------------------ENDPOINT HABITACIONES: Ruta para filtrar por fechas  ----------  
 @habitacion_bp.route('/habitaciones/disponibles', methods=['GET'])
 @rutaProtegida(categoria_esperada='cliente')
 def habitaciones_disponibles():
